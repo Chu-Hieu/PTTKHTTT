@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,12 +19,25 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import Controller.Add_Controller;
+import Controller.PrintList_Controller;
+import Controller.Update_Controller;
+import Database.DAO;
+import Model.SinhVien;
+
 import javax.swing.DefaultComboBoxModel;
 import java.awt.FlowLayout;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Main_Win extends JFrame {
 	private JPanel contentPane;
-	
+	private DefaultTableModel df;
+	private JTable table;
+	private String sqlselect = "select * from HSSV";
+	private int i=1;
 	public Main_Win() {
 		this.init();
 	}
@@ -47,22 +61,36 @@ public class Main_Win extends JFrame {
 		JButton button_Add = new JButton("Thêm hồ sơ");
 		jp.add(button_Add);
 		button_Add.setFont(font);
+		Add_Controller ac = new Add_Controller();
+		button_Add.addActionListener(ac);
 		
 		JButton button_Update = new JButton("Sửa hồ sơ");
 		jp.add(button_Update);
 		button_Update.setFont(font);
+		Update_Controller uc = new Update_Controller();
+		button_Update.addActionListener(uc);
 		
 		JButton button_Del = new JButton("Xóa hồ sơ");
 		jp.add(button_Del);
 		button_Del.setFont(font);
+		button_Del.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String s =getSQLdelete();
+				new Del_Win(s);
+			}
+		});
 		
 		JButton button_Print = new JButton("In danh sách");
+		button_Print.addActionListener(new PrintList_Controller());
 		jp.add(button_Print);
 		button_Print.setFont(font);
 		
 		
 		JPanel jp2 = new JPanel();
-		jp2.setLayout(new GridLayout(1,2));
+		jp2.setLayout(new GridLayout(1,3));
 		panel_Tools.add(jp2,BorderLayout.SOUTH);
 		
 		JPanel panel_Arrange = new JPanel();
@@ -77,9 +105,35 @@ public class Main_Win extends JFrame {
 		JButton btnSpXp = new JButton("Sắp xếp");
 		btnSpXp.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_Arrange.add(btnSpXp);
-		
-		
-		
+		btnSpXp.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String s = comboBox.getSelectedItem().toString();
+				String sql;
+				if(s.equals("Mã sinh viên")) {
+					sql="select * from HSSV order by maSV";
+				}
+				else if(s.equals("Họ và tên")) {
+					sql="select * from HSSV order by hoVaTen";
+				}
+				else if(s.equals("Ngày sinh")) {
+					sql="select * from HSSV order by ngaySinh";
+				}
+				else if(s.equals("Dân tộc")) {
+					sql="select * from HSSV order by danToc";
+				}
+				else if(s.equals("Quê quán")) {
+					sql="select * from HSSV order by queQuan";
+				}
+				else  {
+					sql="select * from HSSV order by nganhDT";
+				}
+				showTable(sql);
+			}
+		});
+				
 		JPanel panel_Search = new JPanel();
 		jp2.add(panel_Search);
 		panel_Search.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -92,16 +146,64 @@ public class Main_Win extends JFrame {
 		JButton btnTmKim = new JButton("Tìm Kiếm");
 		panel_Search.add(btnTmKim);
 		btnTmKim.setFont(font);
+		btnTmKim.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String s = tf_Search.getText();
+				String sql = "select * from HSSV where maSV like'%"+s+"%' or hoVaTen like'%"+s+"%' or"
+						+" CMND like'%"+s+"%'";
+				showTable(sql);						
+			}
+		});
 		
+		JButton jb_reset = new JButton("Tải lại");
+		jb_reset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showTable(sqlselect);
+			}
+		});
+		jb_reset.setFont(font);
+		JPanel jp_reset = new JPanel();
+		jp_reset.add(jb_reset);
+		jp2.add(jp_reset);
 		
 	    String[] column_Name = {" ","Mã sinh viên","Họ và tên","Giới tính","Ngày sinh","Dân tộc","CMND","Quê quán","Ngành ĐT"};
-		//Object[][] data = null;
-	    String[][] data= {{"1","1","1","1","1","1","1","1","1",},{"1","1","1","1","1","1","1","1","1",}
-	    ,{"1","1","1","1","1","1","1","1","1",},{"1","1","1","1","1","1","1","1","1",},{"1","1","1","1","1","1","1","1","1",}};
-		DefaultTableModel df = new DefaultTableModel(data, column_Name);
-	    JTable table = new JTable(df);
-	    table.setFont(new Font("Arial",Font.PLAIN,18));
+		String[][] data = null;
+		
+		df = new DefaultTableModel(data, column_Name);
+		table = new JTable(df);
+	    showTable(sqlselect);
+	    table.setFont(new Font("Arial",Font.PLAIN,14));
 	    JScrollPane panel_Table = new JScrollPane(table);
 	    getContentPane().add(panel_Table,BorderLayout.CENTER);
+	   
+	  
+	}
+	public void showTable(String sql) {
+		DAO dao = new DAO();
+		df.getDataVector().removeAllElements();
+		i=1;
+		ArrayList<SinhVien> list = dao.getList(sql);
+		for(SinhVien sv:list) {
+			df.addRow(new Object[] {
+				i,sv.getMSV(),sv.getHoTen(),sv.getGioiTinh(),sv.getNgaySinh(),sv.getDanToc(),sv.getCMND(),sv.getQueQuan(),sv.getNganhDaoTao()	
+			});
+			i++;
+		}
+		table.setModel(df);
+		dao.closeConnection();
+	}
+	public String getSQLdelete() {
+		int[] rs=table.getSelectedRows();
+		if(rs.length<1)
+			return "";
+		String sql = "delete from HSSV where maSV like N'" +table.getValueAt(rs[0],1)+ "'";
+		for(int i = 1;i < rs.length;i++) {
+			sql=sql+" or maSV like N'"+table.getValueAt(rs[i], 1)+"'";
+		}
+		
+		return sql;
 	}
 }

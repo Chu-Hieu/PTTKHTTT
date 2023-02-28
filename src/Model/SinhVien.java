@@ -1,8 +1,15 @@
 package Model;
 
+import java.sql.Date;
+import java.util.Calendar;
+
 public class SinhVien {
-	private String MSV,hoTen,gioiTinh,ngaySinh,danToc,CMND,queQuan,nganhDaoTao;
-	
+	@Override
+	public String toString() {
+		return   MSV + ", " + hoTen + ", " + gioiTinh + ", " + ngaySinh +", " + danToc + ", "
+				+ CMND + ", " + queQuan + ", " + nganhDaoTao ;
+	}
+	private String MSV,hoTen,gioiTinh,danToc,CMND,queQuan,nganhDaoTao,ngaySinh;
 	public SinhVien() {}
 	public String getMSV() {
 		return MSV;
