@@ -1,10 +1,12 @@
 package View;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -26,10 +28,13 @@ import Controller.Update_Controller;
 import Database.DAO;
 import Model.SinhVien;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 
 public class Main_Win extends JFrame {
@@ -38,10 +43,10 @@ public class Main_Win extends JFrame {
 	private JTable table;
 	private String sqlselect = "select * from HSSV";
 	private int i=1;
-	public Main_Win() {
-		this.init();
+	public Main_Win(String userName) {
+		this.init(userName);
 	}
-	public void init() {
+	public void init(String userName) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
@@ -55,10 +60,10 @@ public class Main_Win extends JFrame {
 		getContentPane().add(panel_Tools,BorderLayout.NORTH);
 		JPanel jp = new JPanel();
 		panel_Tools.add(jp,BorderLayout.CENTER);
-		jp.setLayout(new GridLayout(1,4));
 		Font font = new Font("Arial",Font.BOLD,18);
+		jp.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton button_Add = new JButton("Thêm hồ sơ");
+		JButton button_Add = new JButton("Thêm hồ sơ");		
 		jp.add(button_Add);
 		button_Add.setFont(font);
 		Add_Controller ac = new Add_Controller();
@@ -88,14 +93,72 @@ public class Main_Win extends JFrame {
 		jp.add(button_Print);
 		button_Print.setFont(font);
 		
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
+		JButton button_doiMK = new JButton("Đổi mật khẩu");
+		button_doiMK.setFont(font);
+		jp.add(button_doiMK);
+		button_doiMK.addActionListener(new ActionListener() {		
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ChangePW_Win cw = new ChangePW_Win(userName);
+				cw.setVisible(true);
+			}
+		});
+		
+		JLabel jb_dx = new JLabel("Đăng xuất");
+		jb_dx.setFont(new Font("Arial",Font.PLAIN,12));
+		jb_dx.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				jb_dx.setForeground(Color.black);
+				jb_dx.setFont(new Font("Arial",Font.PLAIN,12));
+				jb_dx.setText("Đăng xuất");
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				jb_dx.setFont(new Font("Arial",Font.ITALIC,12));
+				jb_dx.setForeground(Color.red);
+				jb_dx.setText("<html><u>Đăng xuất</u>");
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				Login_Win lw = new Login_Win();
+				lw.setVisible(true);
+				dispose();
+				
+			}
+		});
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.add(jb_dx);
+		jp.add(panel);
+			
 		JPanel jp2 = new JPanel();
 		jp2.setLayout(new GridLayout(1,3));
 		panel_Tools.add(jp2,BorderLayout.SOUTH);
 		
 		JPanel panel_Arrange = new JPanel();
 		jp2.add(panel_Arrange);
-		panel_Arrange.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel_Arrange.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -166,6 +229,7 @@ public class Main_Win extends JFrame {
 		});
 		jb_reset.setFont(font);
 		JPanel jp_reset = new JPanel();
+		//jp_reset.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
 		jp_reset.add(jb_reset);
 		jp2.add(jp_reset);
 		
@@ -178,6 +242,12 @@ public class Main_Win extends JFrame {
 	    table.setFont(new Font("Arial",Font.PLAIN,14));
 	    JScrollPane panel_Table = new JScrollPane(table);
 	    getContentPane().add(panel_Table,BorderLayout.CENTER);
+	    
+	    JLabel lblNewLabel = new JLabel("                ");
+	    contentPane.add(lblNewLabel, BorderLayout.WEST);
+	    
+	    JLabel lblNewLabel_1 = new JLabel("                 ");
+	    contentPane.add(lblNewLabel_1, BorderLayout.EAST);
 	   
 	  
 	}

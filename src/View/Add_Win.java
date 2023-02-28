@@ -59,29 +59,28 @@ public class Add_Win extends JFrame {
 		
 		textField = new JTextField();
 		contentPane.add(textField);
-		textField.setColumns(10);
+		//textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Họ và tên");
 		contentPane.add(lblNewLabel_1);
 		
 		textField_1 = new JTextField();
 		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		textField_1.setColumns(13);
 		
 		JLabel lblNewLabel_2 = new JLabel("CMTND");
 		contentPane.add(lblNewLabel_2);
 		
 		textField_2 = new JTextField();
 		contentPane.add(textField_2);
-		textField_2.setColumns(10);
+		textField_2.setColumns(13);
 		
 		JLabel lblNewLabel_3 = new JLabel("Ngày sinh");
 		contentPane.add(lblNewLabel_3);
 		
 		textField_3 = new JTextField();
 		contentPane.add(textField_3);
-		textField_3.setColumns(10);
-		
+		textField_3.setColumns(13);
 		JLabel lblNewLabel_4 = new JLabel("Quê quán");
 		contentPane.add(lblNewLabel_4);
 		
@@ -94,7 +93,7 @@ public class Add_Win extends JFrame {
 		
 		textField_5 = new JTextField();
 		contentPane.add(textField_5);
-		textField_5.setColumns(10);
+		textField_5.setColumns(13);
 		
 		JLabel lblNewLabel_6 = new JLabel("Giới tính");
 		contentPane.add(lblNewLabel_6);

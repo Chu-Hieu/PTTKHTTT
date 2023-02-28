@@ -79,9 +79,35 @@ public class DAO {
 		}
 		return false;
 	}
+	public boolean loginAccSV(String userName,String passWord) {
+		String sql = "select * from TaiKhoanSV where maSV like '"+userName
+				+"' and passWord like '"+passWord+"'";
+		try {
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	public void updateAcc(String userName,String passWord) {
 		String sql="UPDATE TaiKhoan SET passWord = '"+passWord 
 				+"' WHERE userName like '" + userName +"'"; 
+		try {
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void updateAccSV(String userName,String passWord) {
+		String sql="UPDATE TaiKhoanSV SET passWord = '"+passWord 
+				+"' WHERE maSV like '" + userName +"'"; 
 		try {
 			PreparedStatement ps = cn.prepareStatement(sql);
 			ps.executeUpdate();
@@ -180,5 +206,18 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return data;
+	}
+	public boolean register(String maSV, String passWord) {
+		String sql = "insert into TaiKhoanSV values (N'"+maSV+"', N'"+passWord+"')";
+		try {
+			PreparedStatement ps = cn.prepareStatement(sql);
+			int check = ps.executeUpdate();
+			if(check>0) 
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

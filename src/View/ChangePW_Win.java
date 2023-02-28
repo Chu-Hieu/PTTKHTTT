@@ -33,23 +33,9 @@ public class ChangePW_Win extends JFrame {
 	private JLabel lblNewLabel_3;
 	private JPanel panel_2;
 	private JButton btnLu;
-	private JLabel lblNewLabel_4;
-	private JTextField textField_1;
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChangePW_Win frame = new ChangePW_Win();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	public ChangePW_Win() {
+	public ChangePW_Win(String userName) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setSize(350,200);
+		this.setSize(350,185);
 		this.setTitle("Đổi mật khẩu");
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -60,14 +46,7 @@ public class ChangePW_Win extends JFrame {
 		
 		panel = new JPanel();
 		contentPane.add(panel);
-		panel.setLayout(new GridLayout(4,2));
-		
-		lblNewLabel_4 = new JLabel("Tài Khoản:");
-		panel.add(lblNewLabel_4);
-		
-		textField_1 = new JTextField();
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		panel.setLayout(new GridLayout(3,2));
 		
 		lblNewLabel = new JLabel("Mật khẩu cũ:");
 		panel.add(lblNewLabel);
@@ -103,14 +82,19 @@ public class ChangePW_Win extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(passwordField.getText().equals(passwordField_1.getText())) {
 					DAO dao = new DAO();
-					if(dao.login(textField_1.getText(), textField.getText())) {
-						dao.updateAcc(textField_1.getText(), passwordField.getText());
+					if(dao.login(userName, textField.getText())) {
+						dao.updateAcc(userName, passwordField.getText());
+						lblNewLabel_3.setText("Đổi mật khẩu thành công");
+						lblNewLabel_3.setForeground(Color.blue);
+					}
+					else if(dao.loginAccSV(userName, textField.getText())) {
+						dao.updateAccSV(userName, passwordField.getText());
 						lblNewLabel_3.setText("Đổi mật khẩu thành công");
 						lblNewLabel_3.setForeground(Color.blue);
 					}
 					else
 					{
-						lblNewLabel_3.setText("Sai tài khoản hoặc mật khẩu");
+						lblNewLabel_3.setText("Mật khẩu cũ không đúng");
 						lblNewLabel_3.setForeground(Color.red);
 					}
 					dao.closeConnection();

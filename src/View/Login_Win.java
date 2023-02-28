@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Controller.ChangePW_Controller;
 import Database.DAO;
 
 import java.awt.BorderLayout;
@@ -30,7 +29,6 @@ public class Login_Win extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
-	ChangePW_Controller dn;
 	public Login_Win() {
 		this.init();
 	}
@@ -80,8 +78,15 @@ public class Login_Win extends JFrame {
 				// TODO Auto-generated method stub
 				DAO dao = new DAO();
 				if(dao.login(textField.getText(), passwordField.getText())) {
-					Main_Win mw = new Main_Win();
+					Main_Win mw = new Main_Win(textField.getText());
 					mw.setVisible(true);
+					dao.closeConnection();
+					dispose();
+				}
+				else if(dao.loginAccSV(textField.getText(), passwordField.getText())) {
+					Main_SV_Win mw = new Main_SV_Win(textField.getText());
+					mw.setVisible(true);
+					dao.closeConnection();
 					dispose();
 				}
 				else
@@ -94,11 +99,16 @@ public class Login_Win extends JFrame {
 		
 		panel_1.add(btnNewButton);	
 		
-		JButton btnNewButton_1 = new JButton("Đổi mật khẩu");
+		JButton btnNewButton_1 = new JButton("Đăng ký");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Register_Win rw = new Register_Win();
+				rw.setVisible(true);
+			}
+		});
 		panel_1.add(btnNewButton_1);
-		ChangePW_Controller cc = new ChangePW_Controller();
-		btnNewButton_1.addActionListener(cc);
 	}
+
 public static void main(String[] args) {
 	Login_Win lw = new Login_Win();
 	lw.setVisible(true);
