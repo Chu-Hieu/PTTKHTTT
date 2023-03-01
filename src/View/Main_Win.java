@@ -58,24 +58,32 @@ public class Main_Win extends JFrame {
 		JPanel panel_Tools = new JPanel();
 		panel_Tools.setLayout(new BorderLayout());
 		getContentPane().add(panel_Tools,BorderLayout.NORTH);
+		
+		JPanel panel_1 = new JPanel();
+		panel_Tools.add(panel_1, BorderLayout.CENTER);
+		panel_1.setLayout(new GridLayout(1, 2, 0, 0));
+		
 		JPanel jp = new JPanel();
-		panel_Tools.add(jp,BorderLayout.CENTER);
+		panel_1.add(jp);
 		Font font = new Font("Arial",Font.BOLD,18);
 		jp.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton button_Add = new JButton("Thêm hồ sơ");		
+		JButton button_Add = new JButton("Thêm hồ sơ");
+		button_Add.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/add-file-icon.png")));
 		jp.add(button_Add);
 		button_Add.setFont(font);
 		Add_Controller ac = new Add_Controller();
 		button_Add.addActionListener(ac);
 		
 		JButton button_Update = new JButton("Sửa hồ sơ");
+		button_Update.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/File-edit-icon.png")));
 		jp.add(button_Update);
 		button_Update.setFont(font);
 		Update_Controller uc = new Update_Controller();
 		button_Update.addActionListener(uc);
 		
 		JButton button_Del = new JButton("Xóa hồ sơ");
+		button_Del.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/delete-file-icon.png")));
 		jp.add(button_Del);
 		button_Del.setFont(font);
 		button_Del.addActionListener(new ActionListener() {
@@ -89,16 +97,14 @@ public class Main_Win extends JFrame {
 		});
 		
 		JButton button_Print = new JButton("In danh sách");
+		button_Print.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/printer-icon.png")));
 		button_Print.addActionListener(new PrintList_Controller());
 		jp.add(button_Print);
 		button_Print.setFont(font);
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		
 		JButton button_doiMK = new JButton("Đổi mật khẩu");
+		button_doiMK.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/change-password-icon.png")));
 		button_doiMK.setFont(font);
-		jp.add(button_doiMK);
 		button_doiMK.addActionListener(new ActionListener() {		
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -107,8 +113,21 @@ public class Main_Win extends JFrame {
 			}
 		});
 		
+		JButton button_QuenMK = new JButton("Quên mật khẩu");
+		button_QuenMK.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/set-password-icon.png")));
+		button_QuenMK.setFont(font);
+		button_QuenMK.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Forget_PassWord_Win fw = new Forget_PassWord_Win();
+				fw.setVisible(true);
+			}
+		});
+		
 		JLabel jb_dx = new JLabel("Đăng xuất");
-		jb_dx.setFont(new Font("Arial",Font.PLAIN,12));
+		jb_dx.setFont(new Font("Arial",Font.PLAIN,14));
 		jb_dx.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -127,14 +146,14 @@ public class Main_Win extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
 				jb_dx.setForeground(Color.black);
-				jb_dx.setFont(new Font("Arial",Font.PLAIN,12));
+				jb_dx.setFont(new Font("Arial",Font.PLAIN,14));
 				jb_dx.setText("Đăng xuất");
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				jb_dx.setFont(new Font("Arial",Font.ITALIC,12));
+				jb_dx.setFont(new Font("Arial",Font.ITALIC,14));
 				jb_dx.setForeground(Color.red);
 				jb_dx.setText("<html><u>Đăng xuất</u>");
 			}
@@ -148,9 +167,16 @@ public class Main_Win extends JFrame {
 				
 			}
 		});
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 5));
+		panel.add(button_doiMK);
+		panel.add(button_QuenMK);
+		JLabel lblNewLabel_2 = new JLabel("                   ");
+		panel.add(lblNewLabel_2);
 		panel.add(jb_dx);
-		jp.add(panel);
+		panel_1.add(panel);
+			
 			
 		JPanel jp2 = new JPanel();
 		jp2.setLayout(new GridLayout(1,3));
@@ -161,11 +187,13 @@ public class Main_Win extends JFrame {
 		panel_Arrange.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
 		JComboBox comboBox = new JComboBox();
+		comboBox.setSize(150,100);
 		comboBox.setFont(new Font("Arial", Font.PLAIN, 18));
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Mã sinh viên", "Họ và tên", "Ngày sinh", "Dân tộc", "Quê quán", "Ngành đào tạo"}));
 		panel_Arrange.add(comboBox);
 		
 		JButton btnSpXp = new JButton("Sắp xếp");
+		btnSpXp.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/Shlyapnikova-Toolbar-Puzzle.32.png")));
 		btnSpXp.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_Arrange.add(btnSpXp);
 		btnSpXp.addActionListener(new ActionListener() {
@@ -207,6 +235,7 @@ public class Main_Win extends JFrame {
 		tf_Search.setFont(new Font("Arial", Font.PLAIN, 18));
 		
 		JButton btnTmKim = new JButton("Tìm Kiếm");
+		btnTmKim.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/web-search-icon.png")));
 		panel_Search.add(btnTmKim);
 		btnTmKim.setFont(font);
 		btnTmKim.addActionListener(new ActionListener() {
@@ -222,6 +251,7 @@ public class Main_Win extends JFrame {
 		});
 		
 		JButton jb_reset = new JButton("Tải lại");
+		jb_reset.setIcon(new ImageIcon(Main_Win.class.getResource("/Image_Icon/refresh-icon.png")));
 		jb_reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showTable(sqlselect);
@@ -233,13 +263,14 @@ public class Main_Win extends JFrame {
 		jp_reset.add(jb_reset);
 		jp2.add(jp_reset);
 		
+		
 	    String[] column_Name = {" ","Mã sinh viên","Họ và tên","Giới tính","Ngày sinh","Dân tộc","CMND","Quê quán","Ngành ĐT"};
 		String[][] data = null;
 		
 		df = new DefaultTableModel(data, column_Name);
 		table = new JTable(df);
 	    showTable(sqlselect);
-	    table.setFont(new Font("Arial",Font.PLAIN,14));
+	    table.setFont(new Font("Arial",Font.PLAIN,16));
 	    JScrollPane panel_Table = new JScrollPane(table);
 	    getContentPane().add(panel_Table,BorderLayout.CENTER);
 	    

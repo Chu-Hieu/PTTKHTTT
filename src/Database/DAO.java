@@ -220,4 +220,18 @@ public class DAO {
 		}
 		return false;
 	}
+	public boolean forget_PassWord(String userName,String passWord) {
+		String sql ="UPDATE TaiKhoanSV SET passWord = N'"+passWord+"' WHERE maSV like N'"+userName+"'";
+		try {
+			PreparedStatement ps = cn.prepareStatement(sql);
+			int check = ps.executeUpdate();
+			if(check>0)
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 }
